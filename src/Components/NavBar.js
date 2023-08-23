@@ -33,25 +33,29 @@ const ImgLogo = styled.img`
 `;
 
 const Login = styled.button`
-  display: flex;
-  align-items: end;
-  border: none;
-  background: none;
+  background-color: transparent;
+  border-color: transparent;
   color: white;
   font-size: 16px;
-  background-image: url(${signImg});
-  background-repeat: no-repeat;
-  background-position: center 0px;
-  height: 54px;
+
+  // display: flex;
+  // align-items: end;
+  // background-image: url(${signImg});
+  // background-repeat: no-repeat;
+  // background-position: center 0px;
+  // height: 54px;
 `;
 
 export const NavBar = () => (
   <NavBarStyled>
     <Logo>
-      <ImgLogo src={logoImg} alt="logo" />
+      <ImgLogo src={logoImg} alt="лого" />
       <H1>MrDonald's</H1>
     </Logo>
 
-    <Login>войти</Login>
+    <Login>
+      <img src={signImg} alt="войти " />
+      <p>войти</p>
+    </Login>
   </NavBarStyled>
 )
