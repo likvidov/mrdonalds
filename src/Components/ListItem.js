@@ -11,8 +11,8 @@ const Item = styled.li`
   position: relative;
   width: 400px;
   height: 155px;
-  background-image: ${({img}) => `url(${img})`}; 
-  backgorund-position: center;
+  background-image: ${({ img }) => `url(${img})`}; 
+  background-position: center;
   background-size: cover;
   margin-top: 30px;
   margin-right: 30px;
@@ -42,13 +42,17 @@ const Item = styled.li`
   }
 `;
 
-export const ListItem = ({ itemList }) => (
+export const ListItem = ({ itemList, setOpenItem }) => (
   <List>
     {itemList.map(item => (
-      <Item key={item.id} img={item.img}>
+      <Item
+        key={item.id}
+        img={item.img}
+        onClick={() => setOpenItem(item)}>
         <p>{item.name}</p>
-        <p>{item.price.toLocaleString('ru-RU', {style: 'currency', currency: 'RUB'})}</p>
+        <p>{item.price.toLocaleString('ru-RU',
+          { style: 'currency', currency: 'RUB' })}</p>
       </Item>
     ))}
-  </List>
+  </List >
 )
