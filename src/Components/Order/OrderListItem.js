@@ -12,6 +12,12 @@ const ItemName = styled.span`
   flex-grow: 1;
 `;
 
+const ItemToppings = styled.span`
+  display: block;
+  font-size: 14px;
+  color: #9A9A9A;
+`;
+
 const ItemPrice = styled.span`
   margin-left: 20px;
   margin-right: 10px;
@@ -32,7 +38,10 @@ const TrashButton = styled.button`
 
 export const OrderListItem = ({ order }) => (
   <OrderItemStyled>
-    <ItemName>{order.name}</ItemName>
+    <ItemName>
+      {order.name}
+      <ItemToppings>{order.topping.filter(item => item.checked).map(item => item.name).join(', ')}</ItemToppings>
+    </ItemName>
     <span>{order.count}</span>
     <ItemPrice>{formatCurrency(totalPriceItems(order))}</ItemPrice>
     <TrashButton />
