@@ -5,17 +5,12 @@ import { totalPriceItems, formatCurrency } from "../Functions/secondaryFunction"
 
 const OrderItemStyled = styled.li`
   display: flex;
+  flex-wrap: wrap;
   margin: 15px 0;
 `;
 
 const ItemName = styled.span`
   flex-grow: 1;
-`;
-
-const ItemToppings = styled.span`
-  display: block;
-  font-size: 14px;
-  color: #9A9A9A;
 `;
 
 const ItemPrice = styled.span`
@@ -36,14 +31,22 @@ const TrashButton = styled.button`
   background-repeat: no-repeat;
 `;
 
-export const OrderListItem = ({ order }) => (
-  <OrderItemStyled>
-    <ItemName>
-      {order.name}
-      <ItemToppings>{order.topping.filter(item => item.checked).map(item => item.name).join(', ')}</ItemToppings>
-    </ItemName>
-    <span>{order.count}</span>
-    <ItemPrice>{formatCurrency(totalPriceItems(order))}</ItemPrice>
-    <TrashButton />
-  </OrderItemStyled>
-)
+const Toppings = styled.div`
+  font-size: 14px;
+  color: #9A9A9A;
+  width: 100%;
+`;
+
+export const OrderListItem = ({ order, deleteOrderItem }) => {
+  const topping = order.topping.filter(item => item.checked).map(item => item.name).join(', ');
+
+  return (
+    <OrderItemStyled>
+      <ItemName>{order.name} {order.choice}</ItemName>
+      <span>{order.count}</span>
+      <ItemPrice>{formatCurrency(totalPriceItems(order))}</ItemPrice>
+      <TrashButton onClick={() => deleteOrderItem(order)}/>
+      {topping && <Toppings>{topping}</Toppings>}
+    </OrderItemStyled>
+  )
+}
