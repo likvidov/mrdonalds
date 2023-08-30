@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { ButtonCheckout } from "../Style/ButtonCheckout";
 import { OrderListItem } from "./OrderListItem";
-import { totalPriceItems, formatCurrency } from "../Functions/secondaryFunction";
+import { totalPriceItems, formatCurrency, projection } from "../Functions/secondaryFunction";
 
 const OrderStyled = styled.section`
   position: fixed;
@@ -46,13 +46,34 @@ const EmptyList = styled.p`
   text-align: center;
 `;
 
-export const Order = ({ orders, setOrders, setOpenItem, authentication, logIn }) => {
+const rulesData = {
+  name: ['name'],
+  price: ['price'],
+  count: ['count'],
+  topping: ['topping', arr => arr.filter(obj => obj.checked).map(obj => obj.name), arr => arr.length ? arr : 'no topping'],
+  choice: ['choice', item => item ? item : 'no choices']
+}
+
+export const Order = ({ orders, setOrders, setOpenItem, authentication, logIn, firebaseDatabase }) => {
+
+  const database = firebaseDatabase();
+
+  const sendOrder = () => {
+    const newOrder = orders.map(projection(rulesData));
+
+    database.ref('orders').push().set({
+      nameClient: authentication.displayName,
+      email: authentication.email,
+      order: newOrder
+    })
+
+    setOrders([]);
+  }
+
   const deleteItem = index => {
     const newOrders = orders.filter((item, i) => i !== index);
     setOrders(newOrders);
   }
-
-  const doOrder = () => authentication ? console.log(orders) : logIn();
 
   const total = orders.reduce((result, order) => totalPriceItems(order) + result, 0);
   const totalCounter = orders.reduce((result, order) => order.count + result, 0);
@@ -78,7 +99,7 @@ export const Order = ({ orders, setOrders, setOpenItem, authentication, logIn })
           <span>{totalCounter}</span>
           <TotalPrice>{formatCurrency(total)}</TotalPrice>
         </Total>
-        <ButtonCheckout onClick={doOrder}>Заказать</ButtonCheckout>
+        <ButtonCheckout onClick={() => authentication ? sendOrder() : logIn()}>Заказать</ButtonCheckout>
       </OrderStyled>
     </>
   )
