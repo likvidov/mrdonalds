@@ -12,7 +12,7 @@ const Item = styled.li`
   position: relative;
   width: 400px;
   height: 155px;
-  background-image: ${({ img }) => `url(${img})`}; 
+  background-image: ${({ $img }) => `url(${$img})`}; 
   background-position: center;
   background-size: cover;
   margin-top: 30px;
@@ -48,7 +48,7 @@ export const ListItem = ({ itemList, setOpenItem }) => (
     {itemList.map(item => (
       <Item
         key={item.id}
-        img={item.img}
+        $img={item.img}
         onClick={() => setOpenItem(item)}>
         <p>{item.name}</p>
         <p>{formatCurrency(item.price)}</p>
